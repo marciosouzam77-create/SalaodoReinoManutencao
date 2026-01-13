@@ -3,7 +3,15 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { MaintenanceState, Volunteer, VolunteerStatus, PlanningItem, ConfirmationStatus, Dc85Item, DocumentFile } from './types.ts';
 import { ClockIcon, CalendarIcon, EditIcon, PlusCircleIcon, TrashIcon, UserCheckIcon, UserXIcon, CheckCircleIcon, XCircleIcon, SaveIcon, AlertTriangleIcon, ClipboardListIcon } from './components/icons.tsx';
 
-const Section = ({ title, icon, children }: { title: string, icon?: React.ReactNode, children: React.ReactNode }) => (
+// FIX: Define props with an interface to fix TypeScript errors related to missing 'children' prop.
+interface SectionProps {
+    title: string;
+    icon?: React.ReactNode;
+    children: React.ReactNode;
+}
+
+// FIX: Changed to React.FC for explicit component typing and to resolve issues with children props.
+const Section: React.FC<SectionProps> = ({ title, icon, children }) => (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6 overflow-hidden">
         <h2 className="bg-blue-600 dark:bg-blue-800 text-white p-4 text-xl font-bold flex items-center">
             {icon && <span className="mr-3">{icon}</span>}
@@ -221,7 +229,8 @@ const App: React.FC = () => {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
-            const newFiles = Array.from(event.target.files).map(file => ({ id: crypto.randomUUID(), name: file.name }));
+            // FIX: Explicitly type 'file' to avoid TypeScript inferring it as 'unknown'.
+            const newFiles = Array.from(event.target.files).map((file: File) => ({ id: crypto.randomUUID(), name: file.name }));
             const currentFileNames = new Set(state.documents.map(d => d.name));
             const uniqueNewFiles = newFiles.filter(f => !currentFileNames.has(f.name));
             updateState('documents', [...state.documents, ...uniqueNewFiles]);
