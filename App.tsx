@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { MaintenanceState, Volunteer, VolunteerStatus, PlanningItem, ConfirmationStatus, Dc85Item, DocumentFile } from './types.ts';
-import { ClockIcon, CalendarIcon, EditIcon, PlusCircleIcon, TrashIcon, UserCheckIcon, UserXIcon, CheckCircleIcon, XCircleIcon, SaveIcon, AlertTriangleIcon } from './components/icons.tsx';
+import { ClockIcon, CalendarIcon, EditIcon, PlusCircleIcon, TrashIcon, UserCheckIcon, UserXIcon, CheckCircleIcon, XCircleIcon, SaveIcon, AlertTriangleIcon, ClipboardListIcon } from './components/icons.tsx';
 
 const Section = ({ title, icon, children }: { title: string, icon?: React.ReactNode, children: React.ReactNode }) => (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6 overflow-hidden">
@@ -231,6 +231,11 @@ const App: React.FC = () => {
     const removeDocument = (id: string) => {
         updateState('documents', state.documents.filter(d => d.id !== id));
     };
+
+    const confirmedVolunteers = state.volunteers.filter(v => v.status === VolunteerStatus.CONFIRMED).length;
+    const totalVolunteers = state.volunteers.length;
+    const completedPlanningItems = state.planningItems.filter(p => p.confirmed === ConfirmationStatus.YES).length;
+    const totalPlanningItems = state.planningItems.length;
     
     return (
         <div className="min-h-screen text-gray-800 dark:text-gray-200 p-4 sm:p-6 lg:p-8">
@@ -378,6 +383,35 @@ const App: React.FC = () => {
                         <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
                            {state.episRequired.map((epi, index) => <li key={index}>{epi}</li>)}
                         </ol>
+                    </Section>
+                </div>
+
+                <div className="lg:col-span-2">
+                    <Section title="Resumo da Manutenção" icon={<ClipboardListIcon className="w-6 h-6" />}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                            <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Data e Hora</p>
+                                <p className="text-lg font-semibold">{state.date} às {state.time}</p>
+                            </div>
+                             <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Voluntários</p>
+                                <p className="text-lg font-semibold">{confirmedVolunteers} de {totalVolunteers} confirmados</p>
+                            </div>
+                            <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Planejamento</p>
+                                <p className="text-lg font-semibold">{completedPlanningItems} de {totalPlanningItems} concluídos</p>
+                            </div>
+                            <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                                <p className="text-sm text-gray-500 dark:text-gray-400">Status DC-85</p>
+                                <p className={`text-lg font-semibold ${state.dc85Confirmed ? 'text-green-500' : 'text-yellow-600'}`}>
+                                    {state.dc85Confirmed ? 'Confirmado' : 'Pendente'}
+                                </p>
+                            </div>
+                            <div className="md:col-span-2 lg:col-span-4 bg-gray-100 dark:bg-gray-700 p-4 rounded-lg text-left">
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Serviços Principais</p>
+                                <p className="text-sm">{state.services}</p>
+                            </div>
+                        </div>
                     </Section>
                 </div>
             </main>
