@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { MaintenanceState, Volunteer, VolunteerStatus, PlanningItem, ConfirmationStatus, Dc85Item, DocumentFile } from './types';
-import { ClockIcon, CalendarIcon, EditIcon, PlusCircleIcon, TrashIcon, UserCheckIcon, UserXIcon, CheckCircleIcon, XCircleIcon, SaveIcon, AlertTriangleIcon } from './components/icons';
+import { MaintenanceState, Volunteer, VolunteerStatus, PlanningItem, ConfirmationStatus, Dc85Item, DocumentFile } from './types.ts';
+import { ClockIcon, CalendarIcon, EditIcon, PlusCircleIcon, TrashIcon, UserCheckIcon, UserXIcon, CheckCircleIcon, XCircleIcon, SaveIcon, AlertTriangleIcon } from './components/icons.tsx';
 
 const Section = ({ title, icon, children }: { title: string, icon?: React.ReactNode, children: React.ReactNode }) => (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6 overflow-hidden">
