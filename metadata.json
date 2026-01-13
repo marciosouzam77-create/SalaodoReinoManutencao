@@ -1,0 +1,5 @@
+{
+  "name": "Gerenciador de Manutenção Programada",
+  "description": "Uma aplicação para planejar e acompanhar tarefas de manutenção programada, incluindo voluntários, equipamentos e documentação necessária.",
+  "requestFramePermissions": []
+}
